@@ -1,0 +1,51 @@
+services:
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: halal
+      POSTGRES_USER: halal
+      POSTGRES_PASSWORD: halal
+    volumes: [pgdata:/var/lib/postgresql/data]
+    ports: ["5432:5432"]
+
+  redis:
+    image: redis:7-alpine
+    ports: ["6379:6379"]
+
+  backend:
+    build: ./backend
+    env_file: ./backend/.env
+    environment:
+      DATABASE_URL: postgres://halal:halal@db:5432/halal
+      CELERY_BROKER_URL: redis://redis:6379/0
+      CELERY_RESULT_BACKEND: redis://redis:6379/1
+      CELERY_TASK_ALWAYS_EAGER: "False"
+      DJANGO_ALLOWED_HOSTS: "*"
+    depends_on: [db, redis]
+    volumes:
+      - ./backend:/app
+      - media:/app/media
+    ports: ["8000:8000"]
+
+  worker:
+    build: ./backend
+    command: celery -A config.celery worker -l info
+    env_file: ./backend/.env
+    environment:
+      DATABASE_URL: postgres://halal:halal@db:5432/halal
+      CELERY_BROKER_URL: redis://redis:6379/0
+      CELERY_RESULT_BACKEND: redis://redis:6379/1
+      CELERY_TASK_ALWAYS_EAGER: "False"
+    depends_on: [backend, redis]
+    volumes:
+      - ./backend:/app
+      - media:/app/media
+
+  frontend:
+    build: ./frontend
+    depends_on: [backend]
+    ports: ["5173:80"]
+
+volumes:
+  pgdata:
+  media:

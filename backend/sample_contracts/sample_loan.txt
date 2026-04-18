@@ -1,0 +1,25 @@
+SAMPLE LOAN AGREEMENT
+
+ARTICLE 1. PARTIES
+This Loan Agreement ("Agreement") is entered into between Lender Inc. ("Lender") and the Borrower identified in the signature block.
+
+ARTICLE 2. PRINCIPAL AND INTEREST
+2.1 The Lender agrees to advance the principal sum of USD 100,000 to the Borrower.
+2.2 Interest shall accrue on the outstanding principal at an annual percentage rate (APR) of 9.5%, calculated on a compound interest basis, payable monthly.
+2.3 In the event of late payment, default interest at LIBOR + 6% shall apply, in addition to a late payment penalty of USD 500 per occurrence.
+
+ARTICLE 3. USE OF PROCEEDS
+3.1 The Borrower shall use the proceeds for the operation of a brewery and distillery located in Region X, including the production and sale of alcoholic beverages.
+3.2 A portion of the proceeds may be allocated to spread-betting and binary options trading on commodity markets at the Borrower's discretion.
+
+ARTICLE 4. PRICING UNCERTAINTY
+4.1 The fees and service charges payable hereunder are subject to change without notice and at the Lender's sole discretion. Final amounts shall be TBD.
+
+ARTICLE 5. GOVERNING LAW
+5.1 This Agreement shall be governed by and construed in accordance with the laws of the State of New York.
+
+ARTICLE 6. NOTICES
+6.1 All notices required under this Agreement shall be delivered in writing to the addresses set forth above.
+
+ARTICLE 7. SIGNATURES
+IN WITNESS WHEREOF, the parties have executed this Agreement as of the date first written above.
