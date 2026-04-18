@@ -16,6 +16,8 @@ from __future__ import annotations
 
 from dataclasses import dataclass, field
 
+from django.conf import settings
+
 from .evidences import evidences_for
 from .i18n import category_label, category_rationale, lang as norm_lang, t
 from .llm import LLMResult, analyze as llm_analyze, is_enabled as llm_enabled
@@ -43,12 +45,17 @@ def analyze_clause(text: str, language: str = "en") -> ClauseAnalysis:
         return ClauseAnalysis()
 
     language = norm_lang(language)
-    hits: list[RuleHit] = detect(text)
+    llm_only = bool(getattr(settings, "LLM_ONLY", False))
+
+    # Rule layer (skipped entirely in LLM-only evaluation mode).
+    hits: list[RuleHit] = [] if llm_only else detect(text)
     rule_hit = _strongest(hits)
 
     llm_result: LLMResult | None = None
-    # Save tokens: skip LLM for very short clauses or pure boilerplate.
-    if llm_enabled() and len(text) >= 60:
+    # In LLM-only mode we always call the LLM (no length gate); otherwise we
+    # save tokens by skipping very short clauses where rules already suffice.
+    min_len = 1 if llm_only else 60
+    if llm_enabled() and len(text) >= min_len:
         llm_result = llm_analyze(text, language=language)
 
     return _merge(rule_hit, llm_result, hits, language)

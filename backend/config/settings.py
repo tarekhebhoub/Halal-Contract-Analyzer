@@ -195,7 +195,11 @@ ALLOWED_UPLOAD_MIMETYPES = {
 # --- AI / LLM -----------------------------------------------------------
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY", "")
 OPENAI_MODEL = os.getenv("OPENAI_MODEL", "gpt-4o-mini")
+# Optional custom endpoint (e.g. OpenRouter: https://openrouter.ai/api/v1)
+OPENAI_BASE_URL = os.getenv("OPENAI_BASE_URL", "")
 LLM_ENABLED = env_bool("LLM_ENABLED", bool(OPENAI_API_KEY))
+# When True, the rule-based layer is bypassed and ONLY the LLM verdict is used.
+LLM_ONLY = env_bool("LLM_ONLY", False)
 
 # --- Celery -------------------------------------------------------------
 CELERY_BROKER_URL = os.getenv("CELERY_BROKER_URL", "redis://localhost:6379/0")

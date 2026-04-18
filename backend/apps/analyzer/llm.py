@@ -69,7 +69,17 @@ def analyze(clause_text: str, language: str = "en") -> LLMResult | None:
     try:
         from openai import OpenAI
 
-        client = OpenAI(api_key=settings.OPENAI_API_KEY)
+        client_kwargs = {"api_key": settings.OPENAI_API_KEY}
+        base_url = (getattr(settings, "OPENAI_BASE_URL", "") or "").strip()
+        if base_url:
+            client_kwargs["base_url"] = base_url
+        # OpenRouter recommends these identification headers; harmless elsewhere.
+        if "openrouter" in base_url:
+            client_kwargs["default_headers"] = {
+                "HTTP-Referer": "http://localhost:5173",
+                "X-Title": "Halal Contract Analyzer",
+            }
+        client = OpenAI(**client_kwargs)
         prompt = PROMPT_TEMPLATE.format(
             clause=clause_text[:4000],
             language_name=LANGUAGE_NAMES.get(language, "English"),
